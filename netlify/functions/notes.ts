@@ -1,13 +1,12 @@
 import { Handler } from '@netlify/functions';
+import { getStore } from '@netlify/blobs';
 
 interface Note {
   id: string;
   date: string;
   content: string;
+  clear?: boolean;
 }
-
-// In-memory store for development. In production, use a proper database
-let notes: Note[] = [];
 
 export const handler: Handler = async (event) => {
   const headers = {
@@ -25,8 +24,14 @@ export const handler: Handler = async (event) => {
     };
   }
 
+  const store = getStore('notes');
+
   try {
     if (event.httpMethod === 'GET') {
+      // Get all notes from the store
+      const notesData = await store.get('all-notes');
+      const notes = notesData ? JSON.parse(notesData as string) : [];
+      
       return {
         statusCode: 200,
         headers,
@@ -35,11 +40,23 @@ export const handler: Handler = async (event) => {
     }
 
     if (event.httpMethod === 'POST' && event.body) {
+      // Get existing notes
+      const notesData = await store.get('all-notes');
+      let notes: Note[] = notesData ? JSON.parse(notesData as string) : [];
+      
       const note = JSON.parse(event.body) as Note;
       
-      // Remove any existing note for the same date
-      notes = notes.filter(n => n.date !== note.date);
-      notes.push(note);
+      if (note.clear === true) {
+        // Clear all notes
+        notes = [];
+      } else {
+        // Remove any existing note for the same date
+        notes = notes.filter(n => n.date !== note.date);
+        notes.push(note);
+      }
+
+      // Save updated notes
+      await store.set('all-notes', JSON.stringify(notes));
 
       return {
         statusCode: 200,
@@ -54,6 +71,7 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify({ message: 'Invalid request' }),
     };
   } catch (error) {
+    console.error('Error handling request:', error);
     return {
       statusCode: 500,
       headers,
