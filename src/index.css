@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #f9c5d1;
+  --color-secondary: #f2a2b8;
+  --color-accent: #f3b0c3;
+  --color-background: #fef6f9;
+  --color-text: #4a2b34;
+  --color-text-light: #6d4956;
+}
+
+[data-theme="dark"] {
+  --color-primary: #ff84a1;
+  --color-secondary: #ff6b8b;
+  --color-accent: #ff4d73;
+  --color-background: #1a1a1a;
+  --color-text: #ffffff;
+  --color-text-light: #e1e1e1;
+}
+
+body {
+  @apply bg-background text-text font-sans;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f9c5d1' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+[data-theme="dark"] body {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ff84a1' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Handwritten font classes */
+.font-handwritten {
+  font-family: 'Dancing Script', cursive;
+}
+
+.font-cursive {
+  font-family: 'Sacramento', cursive;
+}
+
+.font-headline {
+  font-family: 'Pacifico', cursive;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-secondary);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Paper texture */
+.paper-texture {
+  background-color: var(--color-background);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23f5f5f5' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="dark"] .paper-texture {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23333' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 rounded-full text-white bg-secondary hover:bg-accent transition-colors duration-300 shadow-md font-handwritten text-lg;
+  }
+  
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-headline text-primary mb-6 text-center;
+  }
+  
+  .handwritten-card {
+    @apply paper-texture p-6 rounded-lg font-handwritten text-lg leading-relaxed text-text-light;
+  }
+}
